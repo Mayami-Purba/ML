@@ -14,7 +14,6 @@ X_train = X_train.reshape(X_train.shape[0], 28, 28, 1)
 X_test = X_test.reshape(X_test.shape[0], 28, 28, 1)
 input_shape = (28, 28, 1)
 
-# convert class vectors to binary class matrices
 Y_train = tf.keras.utils.to_categorical(Y_train, 10)
 Y_test = tf.keras.utils.to_categorical(Y_test, 10)
 
@@ -28,12 +27,9 @@ print('X_test shape:', X_test.shape)
 
 def define_model():
     model = Sequential()
-    model.add(Conv2D(32, (3, 3), activation='relu',
-                     kernel_initializer='he_uniform', input_shape=(28, 28, 1)))
-    model.add(Conv2D(64, (3, 3), activation='relu',
-                     kernel_initializer='he_uniform'))
-    model.add(Conv2D(64, (3, 3), activation='relu',
-                     kernel_initializer='he_uniform'))
+    model.add(Conv2D(32, (3, 3), activation='relu', kernel_initializer='he_uniform', input_shape=(28, 28, 1)))
+    model.add(Conv2D(64, (3, 3), activation='relu', kernel_initializer='he_uniform'))
+    model.add(Conv2D(64, (3, 3), activation='relu', kernel_initializer='he_uniform'))
     model.add(MaxPooling2D((2, 2)))
     model.add(Dropout(0.25))
     model.add(Flatten())
@@ -41,15 +37,12 @@ def define_model():
     model.add(Dropout(0.25))
     model.add(Dense(10, activation='softmax'))
     opt = tf.keras.optimizers.Adam(lr=0.01)
-    model.compile(optimizer=opt, loss='categorical_crossentropy',
-                  metrics=['accuracy'])
+    model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy'])
     return model
 
 
 model = define_model()
-history = model.fit(X_train, Y_train, epochs=10, batch_size=64,
-                    validation_data=(X_test, Y_test), verbose=1)
-
+history = model.fit(X_train, Y_train, epochs=10, batch_size=64, validation_data=(X_test, Y_test), verbose=1)
 
 model.save('mnist.h5')
 print("Saving the model as mnist.h5")
